@@ -7,8 +7,8 @@ class Ultramsg:
     def __init__(self, json):
         self.json = json
         self.dict_messages = json["data"]
-        self.__ultraAPIUrl = f"https://api.ultramsg.com/"+{ULTRAMSG_CREDENTIALS.get("instance")}+"/"
-        self.__token = {ULTRAMSG_CREDENTIALS.get("token")}
+        self.__ultraAPIUrl = f"https://api.ultramsg.com/{ULTRAMSG_CREDENTIALS.get('instance')}/"
+        self.__token = ULTRAMSG_CREDENTIALS.get("token")
     
     # ENVOYER DES REQUETES A L'API
     def send_requests(self, type, data={}):
@@ -32,6 +32,9 @@ class Ultramsg:
     # LA LOGIQUE DU PROGRAMME
     def Processingـincomingـmessages(self):
         if self.dict_messages != []:
-            message = self.dict_messages
             print("dict_message : ", self.dict_messages)
-            print(message)
+            """
+            {'id': 'false_22504774183@c.us_3EB0717CB990A3FF06B0C4', 'from': '22504774183@c.us', 'to': '447458149047@c.us', 'author': '', 'pushname': 'Brou Kouadio Stéphane Fabien', 'ack': '', 'type': 'chat', 'body': 'Hello', 'media': '', 'fromMe': False, 'self': False, 'isForwarded': False, 'isMentioned': False, 'quotedMsg': {}, 'mentionedIds': [], 'time': 1687181008}
+            """
+        else:
+            print("no data")
