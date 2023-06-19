@@ -13,8 +13,8 @@ class ParseNumber:
             return True
         return False
 
-
     def height_to_ten(self, phone_number: str) -> str:
+        stop=False
         """
         This function transform height digit ivorian number to 10 digit ivorian number
 
@@ -86,9 +86,16 @@ class ParseNumber:
             "97",
             "98",
         ]
+        
+        # ON VERIFIE QUE LE NUMERO ENVOYER NE CONTIENT QUE DES CHIFFRES
+        for char in phone_number:
+            if char.isalpha():
+                stop=True
 
-        if self.is_225(phone_number):
+        if self.is_225(phone_number) and not stop:
             if len(phone_number) == 13:
+                if phone_number[3:5] not in mtn_numbers and phone_number[3:5] not in moov_numbers and phone_number[3:5] not in orange_numbers:
+                    return False
                 return phone_number
             
             elif len(phone_number) == 11:
@@ -108,7 +115,6 @@ class ParseNumber:
                     return new_number
             else: return False
         return False
-
 
     def whatsapp_to_civ(self, phone_number: str) -> str:
         """
