@@ -6,9 +6,9 @@ from keys import ULTRAMSG_CREDENTIALS # contient nos clés d'identification
 from Class.parseNumber import ParseNumber
 
 class Ultramsg:
-    def __init__(self, json):
+    def __init__(self, json={}):
         self.json = json
-        self.dict_messages = json["data"]
+        self.dict_messages = json.get("data")
         self.__ultraAPIUrl = f"https://api.ultramsg.com/{ULTRAMSG_CREDENTIALS.get('instance')}/"
         self.__token = ULTRAMSG_CREDENTIALS.get("token")
     
@@ -64,6 +64,7 @@ class Ultramsg:
                 # ON VÉRIFIE QU'ON A REÇU DU TEXTE COMME MESSAGE
                 if (self.dict_messages['type'] != "chat"):
                     self.send_message(self.dict_messages['from'], "❌ *Mauvaise entrée !*")
+                    self.welcome(self.dict_messages['from'])
                     return False
                 
                 # ON RÉCUPÈRE LE MESSAGE ENVOYÉE PAR L'UTILISATEUR
@@ -73,6 +74,7 @@ class Ultramsg:
                 # VÉRIFIE QUE LE MESSAGE EST UN NUMÉRO ET QU'IL EST BIEN FORMATÉ/VALIDE
                 if not number_parser.height_to_ten(message_recu):
                     self.send_message(self.dict_messages['from'], "❌ *Veuillez respecter le format requis !*")
+                    self.welcome(self.dict_messages['from'])
                     return False
                 
                 # ON VÉRIFIE SI L'UTILISATEUR EST WHATSAPP
