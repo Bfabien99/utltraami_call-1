@@ -11,16 +11,16 @@ def make_call_from_whatsapp():
     bot = Ultramsg(request.json)
     phones = bot.Processingـincomingـmessages()
     if phones:
-        #ami = AsteriskAmi(phones["chatId"], phones["caller"], phones["receiver"])
-        ami = AsteriskAmi(phones["chatId"], "701", "702")
-        ami.make_internal_call()
-        print(phones)
+        ami = AsteriskAmi(phones["chatId"], phones["caller"], phones["receiver"])
+        data = ami.make_external_call()
+        print("data : ", data)
     return "make call"
 
 @app.get("/internal")
 def make_an_internal_call():
     ami = AsteriskAmi("", "701", "702")
-    ami.make_internal_call()
+    data = ami.make_internal_call()
+    print("data : ", data)
     return "e"
 if (__name__) == "__main__":
     app.run()
