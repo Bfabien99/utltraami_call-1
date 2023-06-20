@@ -1,7 +1,8 @@
 import json
 import requests
-import json
-from keys import ULTRAMSG_CREDENTIALS
+
+# PROPRE À MOI
+from keys import ULTRAMSG_CREDENTIALS # contient nos clés d'identification
 from Class.parseNumber import ParseNumber
 
 class Ultramsg:
@@ -62,19 +63,37 @@ class Ultramsg:
             if not self.dict_messages["fromMe"]:
                 # ON VÉRIFIE QU'ON A REÇU DU TEXTE COMME MESSAGE
                 if (self.dict_messages['type'] != "chat"):
-                    return self.send_message(self.dict_messages['from'], "❌ Mauvaise entrée!")
+                    self.send_message(self.dict_messages['from'], "❌ *Mauvaise entrée !*")
+                    return False
                 
                 # ON RÉCUPÈRE LE MESSAGE ENVOYÉE PAR L'UTILISATEUR
                 message_body = self.dict_messages["body"].split()
                 message_recu = message_body[0]
                 
+                # VÉRIFIE QUE LE MESSAGE EST UN NUMÉRO ET QU'IL EST BIEN FORMATÉ/VALIDE
                 if not number_parser.height_to_ten(message_recu):
-                    return self.send_message(self.dict_messages['from'], "❌ Veuillez respecter le format requis!")
+                    self.send_message(self.dict_messages['from'], "❌ *Veuillez respecter le format requis !*")
+                    return False
+                
+                # ON VÉRIFIE SI L'UTILISATEUR EST WHATSAPP
                 if self.is_whatsapp(f"{number_parser.height_to_ten(message_recu)}@c.us").get("status") == 'valid':
                     # SI CET UTILISATEUR EST UN NUMERO WHATSAPP
-                    print("numéro whatsapp")
+                    numero_whatsapp=True
                 else:
-                    print("numéro non whatsapp")
+                    numero_whatsapp=False
+                
+                # ON RECUPÈRE LE NUMÉRO DE L'UTILISATEUR ET LE NUMÉRO À JOINDRE
+                caller_phone = number_parser.whatsapp_to_civ(self.dict_messages['from'])
+                receiver_phone = number_parser.height_to_ten(message_recu)
+                
+                # ON S'ASSURE QUE L'UTILISATEUR NE LANCE PAS D'APPEL VERS SON PROPRE NUMÉRO
+                if caller_phone == receiver_phone:
+                    self.send_message(self.dict_messages['from'], "❌ *Veuillez entrer un numéro différent du votre !*")
+                    return False
+                
+                data = {"chatId":self.dict_messages['from'], "caller":caller_phone, "receiver":receiver_phone, "is_whatsapp":numero_whatsapp}
+                return data
             
         else:
             print("no data")
+            return False
