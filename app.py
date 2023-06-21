@@ -76,10 +76,50 @@ def unique_link():
 
 @app.get("/internal")
 def make_an_internal_call():
-    ami = AsteriskAmi("", "701", "702")
+    phones={"caller":"702", "receiver":"701"}
+    attempt = Attempts()
+    attempt.add(phones["caller"], phones["receiver"])
+    
+    ami = AsteriskAmi("", phones["caller"], phones["receiver"])
     call = ami.make_internal_call()
     print(call)
-    return "e"
+        
+    if call:
+        caller_stat = CallerStat()
+        called_stat = CalledStat()
+        
+        unique_link = UniqueLink()
+        unique_link.add(phones["caller"], phones["receiver"])
+        
+        if call.get("cdr") != {}:
+            cdr = Cdr()
+            cdr.add(phones["caller"], phones["receiver"], call['cdr']['StartTime'], call['cdr']['AnswerTime'], call['cdr']['EndTime'], call['cdr']['Duration'], call['cdr']['BillableSeconds'], call['cdr']['Disposition'], call['cdr']['UniqueID'])
+            
+        if call.get('bridge') != {}:
+            if not caller_stat.exist(phones["caller"]):
+                caller_stat.add(phones["caller"])
+                caller_stat.answered(phones["caller"])
+            else:
+                caller_stat.answered(phones["caller"])
+                
+            if not called_stat.exist(phones["receiver"]):
+                called_stat.add(phones["receiver"], 0)
+                called_stat.answered(phones["receiver"])
+            else:
+                called_stat.answered(phones["receiver"])
+        else:
+            if not caller_stat.exist(phones["caller"]):
+                caller_stat.add(phones["caller"])
+                caller_stat.unanswered(phones["caller"])
+            else:
+                caller_stat.unanswered(phones["caller"])
+                
+            if not called_stat.exist(phones["receiver"]):
+                called_stat.add(phones["receiver"], 0)
+                called_stat.unanswered(phones["receiver"])
+            else:
+                called_stat.unanswered(phones["receiver"])
+    return "make internal call"
 
 
 if (__name__) == "__main__":

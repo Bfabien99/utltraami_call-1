@@ -8,7 +8,7 @@ class Attempts(BulkDatabase):
         super().__init__()
         
     def add(self, caller:str, receiver:str) -> None:
-        self._get_cursor().execute(f"INSERT INTO {self.__table}(attempt_date, detail_date, caller, called) VALUES(?,?,?,?,?)",(datetime.utcnow().strftime("%Y-%m-%d"), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), caller, receiver))
+        self._get_cursor().execute(f"INSERT INTO {self.__table}(attempt_date, detail_date, caller, called) VALUES(?,?,?,?)",(datetime.utcnow().strftime("%Y-%m-%d"), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), caller, receiver))
         self._get_connection().commit()
         
     def get_all(self) -> dict|None:
