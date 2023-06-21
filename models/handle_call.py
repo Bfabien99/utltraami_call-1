@@ -46,12 +46,14 @@ class CallerStat(BulkDatabase):
     def answered(self, caller:str):
         self._get_cursor().execute(f"UPDATE {self.__table} SET days_call_answered = days_call_answered + 1 WHERE caller=?",(caller,))
         self._get_connection().commit()
+        self.__update_score(caller)
         
     def unanswered(self, caller:str):
         self._get_cursor().execute(f"UPDATE {self.__table} SET days_call_unanswered = days_call_unanswered + 1 WHERE caller=?",(caller,))
         self._get_connection().commit()
+        self.__update_score(caller)
     
-    def update_score(self, caller):
+    def __update_score(self, caller):
         self._get_cursor().execute(f"UPDATE {self.__table} SET score = days_call_answered - days_call_unanswered WHERE caller=?",(caller,))
         self._get_connection().commit()
         
@@ -69,19 +71,21 @@ class CalledStat(BulkDatabase):
         query = self._get_cursor().execute(f"SELECT * FROM {self.__table}")
         return query.fetchall()
     
-    def exist(self, caller:str):
-        query = self._get_cursor().execute(f"SELECT caller FROM {self.__table} WHERE caller=?",(caller,))
+    def exist(self, called:str):
+        query = self._get_cursor().execute(f"SELECT called FROM {self.__table} WHERE called=?",(called,))
         return query.fetchone()
 
     def answered(self, called:str):
         self._get_cursor().execute(f"UPDATE {self.__table} SET days_call_answered = days_call_answered + 1 WHERE called=?",(called,))
         self._get_connection().commit()
+        self.__update_score(called)
         
     def unanswered(self, called:str):
         self._get_cursor().execute(f"UPDATE {self.__table} SET days_call_unanswered = days_call_unanswered + 1 WHERE called=?",(called,))
         self._get_connection().commit()
+        self.__update_score(called)
     
-    def update_score(self, called):
+    def __update_score(self, called):
         self._get_cursor().execute(f"UPDATE {self.__table} SET score = days_call_answered - days_call_unanswered WHERE called=?",(called,))
         self._get_connection().commit()
 
