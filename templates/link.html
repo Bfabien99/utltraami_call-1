@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block style %}
+{{super()}}
+{% endblock %}
+{% block content %}
+<h1 id="page_title">unique link</h1>
+    <section>
+        {% if links %}
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>caller</th>
+                    <th>called</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for link in links %}
+            <tr>
+                <td>{{link.id}}</td>
+                <td>{{link.caller}}</td>
+                <td>{{link.called}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        {% else %}
+        {% endif %}
+    </section>
+{% endblock %}
+{% block script %}
+{{super()}}
+{% endblock %}

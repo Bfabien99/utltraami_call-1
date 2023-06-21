@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block style %}
+{{super()}}
+{% endblock %}
+{% block content %}
+<h1 id="page_title">call detail recording</h1>
+    <section>
+        {% if cdrs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Start at</th>
+                    <th>Answered at</th>
+                    <th>End at</th>
+                    <th>Duration</th>
+                    <th>Billable sec</th>
+                    <th>Disposition</th>
+                    <th>Unique Id</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for cdr in cdrs %}
+            <tr>
+                <th>{{cdr.id}}</th>
+                <th>{{cdr.caller}}</th>
+                <th>{{cdr.called}}</th>
+                <th>{{cdr.start_time}}</th>
+                <th>{{cdr.answer_time}}</th>
+                <th>{{cdr.end_timed}}</th>
+                <th>{{cdr.duration}}</th>
+                <th>{{cdr.billable_sec}}</th>
+                <th>{{cdr.disposition}}</th>
+                <th>{{cdr.unique_id}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        {% else %}
+        {% endif %}
+    </section>
+{% endblock %}
+{% block script %}
+{{super()}}
+{% endblock %}

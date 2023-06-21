@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block style %}
+{{super()}}
+{% endblock %}
+{% block content %}
+    <h1 id="page_title">caller stats</h1>
+    <section>
+        {% if caller_stats %}
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Phone Number</th>
+                    <th>Call Answered</th>
+                    <th>Call Unanswered</th>
+                    <th>ACD</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for stat in caller_stats %}
+            <tr>
+                <th>{{stat.id}}</th>
+                <th>{{stat.caller}}</th>
+                <th>{{stat.days_call_answered}}</th>
+                <th>{{stat.days_call_unanswered}}</th>
+                <th>{{stat.Acd}}</th>
+                <th>{{stat.score}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        {% else %}
+        {% endif %}
+    </section>
+{% endblock %}
+{% block script %}
+{{super()}}
+{% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for
 from Class.ultramsg import Ultramsg
 from Class.aami import AsteriskAmi
 from models.handle_call import Attempts, Cdr, CallerStat, CalledStat, UniqueLink
@@ -56,25 +56,29 @@ def make_call_from_whatsapp():
 
 @app.get("/")
 def home():
-    return "Home"
+    return render_template("index.html")
 
 @app.get("/cdr")
 def cdr():
-    return "Cdr"
+    cdr = Cdr()
+    return render_template("cdr.html", cdrs=cdr.get_all())
 
 @app.get("/caller")
 def caller_stat():
-    return "Caller stat"
+    caller_stat=CallerStat()
+    return render_template("caller_stats.html", caller_stats=caller_stat.get_all())
 
 @app.get("/called")
 def called_stat():
-    return "Called stat"
+    called_stat=CalledStat()
+    return render_template("called_stats.html", called_stats=called_stat.get_all())
 
 @app.get("/link")
 def unique_link():
-    return "Unique link"
+    unique_link=UniqueLink()
+    return render_template("link.html", links=unique_link.get_all())
 
-@app.get("/internal")
+@app.post("/internal")
 def make_an_internal_call():
     phones={"caller":"702", "receiver":"701"}
     attempt = Attempts()
@@ -119,7 +123,7 @@ def make_an_internal_call():
                 called_stat.unanswered(phones["receiver"])
             else:
                 called_stat.unanswered(phones["receiver"])
-    return "make internal call"
+    return True
 
 
 if (__name__) == "__main__":

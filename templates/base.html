@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/c0dfab195c.js" crossorigin="anonymous"></script>
+    <title>TITLE</title>
+    {% block style %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex-grow: 1;
+        }
+
+        a{
+            text-decoration: none;
+            color: #777;
+            transition: all 0.2s ease-in-out;
+        }
+
+        header{
+            display: flex;
+            padding: 10px 20px;
+            background-color: #333;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        header .logo{
+            font-size: 4.1em;
+            padding: 5px;
+        }
+        header .top_nav{
+            display: flex;
+            list-style: none;
+            width: 100%;
+            max-width: 600px;
+            justify-content: space-around;
+        }
+        header .top_nav li{
+            padding: 5px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        header .top_nav li a{
+            font-size: 1.3em;
+            color: #ccc;
+        }
+        header .top_nav li:hover a{
+            color: #ddd;
+        }
+        header .top_nav li a:hover{
+            color: #fff;
+        }
+        header .top_nav #call{
+            font-size: 1.3em;
+            border: 1px solid rgb(252, 116, 31);
+            color: rgb(252, 116, 31);
+            border-radius: 50%;
+            padding: 5px;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        header .top_nav #call:hover{
+            font-size: 1.5em;
+            color: #fff;
+            border: 1px solid #fff;
+            background-color: rgb(36, 143, 29);
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        .container{
+            display: flex;
+            flex-direction: column;
+            padding: 15px 5px;
+            width: 100%;
+        }
+        .container #page_title{
+            text-align: center;
+            color: #333;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        section{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        section table{
+            width: 100%;
+            max-width: fit-content;
+            border: 1px solid;
+        }
+        section table td, section table th{
+            min-width: 100px;
+            text-align: center;
+            padding: 5px;
+        }
+        section table thead th{
+            font-size: 1.2em;
+            text-transform: capitalize;
+        }
+        section table tbody tr:nth-child(odd){
+            background:#c2c2c2;
+        }
+        section table tbody tr:nth-child(even){
+            background:#8e8e8e;
+        }
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+    <header>
+        <a href="{{url_for('home')}}" class="logo">
+            UA
+        </a>
+        <ul class="top_nav">
+            <li><a href="{{url_for('cdr')}}">cdr</a></li>
+            <li><a href="{{url_for('caller_stat')}}">caller stats</a></li>
+            <li><a href="{{url_for('called_stat')}}">called stats</a></li>
+            <li><a href="{{url_for('unique_link')}}">unique link</a></li>
+            <li><i id="call" class="fa-solid fa-phone-volume"></i></li>
+        </ul>
+    </header>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer></footer>
+</body>
+{% block script %}
+{% endblock %}
+
+</html>

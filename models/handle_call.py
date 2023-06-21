@@ -24,6 +24,10 @@ class Cdr(BulkDatabase):
     def add(self,caller:str,called:str,start_time:str,answer_time:str,end_time:str,duration:str,billable_sec:str,disposition:str,unique_id:str) -> None:
         self._get_cursor().execute(f"INSERT INTO {self.__table}(caller,called,start_time,answer_time,end_time,duration,billable_sec,disposition,unique_id) VALUES(?,?,?,?,?,?,?,?,?)",(caller,called,start_time,answer_time,end_time,duration,billable_sec,disposition,unique_id))
         self._get_connection().commit()
+        
+    def get_all(self) -> dict|None:
+        query = self._get_cursor().execute(f"SELECT * FROM {self.__table}")
+        return query.fetchall()
 
 # GERER LES STATISTIQUES DE L'APPELANT       
 class CallerStat(BulkDatabase):
