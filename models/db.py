@@ -31,7 +31,7 @@ class BulkDatabase:
     
     # LA TABLE POUR RELIER UN APPELANT À UN APPELER
     def __create_table_unique_link(self):
-         self.__cursor.execute("CREATE TABLE IF NOT EXISTS unique_link(id INTEGER PRIMARY KEY, caller TEXT NOT NULL, called TEXT NOT NULL)")
+         self.__cursor.execute("CREATE TABLE IF NOT EXISTS unique_link(id INTEGER PRIMARY KEY, caller TEXT NOT NULL, called TEXT UNIQUE NOT NULL)")
          
     def _get_cursor(self):
         return self.__cursor
