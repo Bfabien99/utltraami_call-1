@@ -123,7 +123,7 @@ def make_an_internal_call():
                 called_stat.unanswered(phones["receiver"])
             else:
                 called_stat.unanswered(phones["receiver"])
-    return True
+    return False
 
 
 if (__name__) == "__main__":
