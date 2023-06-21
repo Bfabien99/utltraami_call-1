@@ -1,8 +1,8 @@
 from datetime import datetime
-from models.db import Database
+from models.db import BulkDatabase
 
 # GERER LES TENTATIVES D'APPELS
-class Attempts(Database):
+class Attempts(BulkDatabase):
     def __init__(self) -> None:
         super().__init__()
         
@@ -15,7 +15,7 @@ class Attempts(Database):
         return query.fetchall()
 
 # GERER LE CDR
-class Cdr(Database):
+class Cdr(BulkDatabase):
     def __init__(self) -> None:
         super().__init__()
         
@@ -24,7 +24,7 @@ class Cdr(Database):
         self._get_connection().commit()
 
 # GERER LES STATISTIQUES DE L'APPELANT       
-class CallerStat(Database):
+class CallerStat(BulkDatabase):
     def __init__(self) -> None:
         super().__init__()
         
@@ -37,7 +37,7 @@ class CallerStat(Database):
         return query.fetchall()
 
 # GERER LES STATISTIQUES DE L'APPELÉ      
-class CalledStat(Database):
+class CalledStat(BulkDatabase):
     def __init__(self) -> None:
         super().__init__()
         
@@ -50,7 +50,7 @@ class CalledStat(Database):
         return query.fetchall()
 
 # GERER LA LIAISON APPELANT-APPELÉ       
-class UniqueLink(Database):
+class UniqueLink(BulkDatabase):
     def __init__(self) -> None:
         super().__init__()
         

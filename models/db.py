@@ -1,6 +1,6 @@
 import sqlite3
 
-class Database:
+class BulkDatabase:
     def __init__(self):
         self.__con = sqlite3.connect("call.db")
         self.__con.row_factory = sqlite3.Row   #   add this row
