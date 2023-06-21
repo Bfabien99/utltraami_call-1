@@ -96,9 +96,14 @@ class UniqueLink(BulkDatabase):
         super().__init__()
         
     def add(self,caller:str,called:str) -> None:
-        self._get_cursor().execute(f"INSERT INTO {self.__table}(caller,called) VALUES(?,?)",(caller,called))
-        self._get_connection().commit()
+        if not self.exist(caller, called):
+            self._get_cursor().execute(f"INSERT INTO {self.__table}(caller,called) VALUES(?,?)",(caller,called))
+            self._get_connection().commit()
         
     def get_all(self) -> dict|None:
         query = self._get_cursor().execute(f"SELECT * FROM {self.__table}")
         return query.fetchall()
+    
+    def exist(self, caller:str, called:str):
+        query = self._get_cursor().execute(f"SELECT * FROM {self.__table} WHERE called=? AND caller=?",(called,caller))
+        return query.fetchone()
