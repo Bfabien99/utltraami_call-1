@@ -15,7 +15,7 @@ class BulkDatabase:
     
     # LA TABLE POUR SAUVEGARDER TOUTE TENTATIVE D'APPEL
     def __create_table_attempts(self):
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS attempts(id INTEGER PRIMARY KEY, attempt_date TEXT, detail_date TEXT, caller TEXT NOT NULL, called TEXT NOT NULL, status TEXT NOT NULL)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS attempts(id INTEGER PRIMARY KEY, attempt_date TEXT, detail_date TEXT, caller TEXT NOT NULL, called TEXT NOT NULL)")
     
     # LA TABLE POUR SAUVEGARDER LE CDR(CALL DETAIL RECORDING)
     def __create_table_cdr(self):
