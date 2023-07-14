@@ -13,6 +13,7 @@
                     <th>Phone Number</th>
                     <th>Call Answered</th>
                     <th>Call Unanswered</th>
+                    <th>Total Call made</th>
                     <th>ACD</th>
                     <th>Score</th>
                 </tr>
@@ -24,6 +25,7 @@
                 <th>{{stat.caller}}</th>
                 <th>{{stat.days_call_answered}}</th>
                 <th>{{stat.days_call_unanswered}}</th>
+                <th>{{stat.days_call_unanswered + stat.days_call_answered}}</th>
                 <th>{{stat.Acd}}</th>
                 <th>{{stat.score}}</th>
             </tr>
@@ -31,6 +33,7 @@
         </tbody>
     </table>
         {% else %}
+        <h3 class="empty">No state</h3>
         {% endif %}
     </section>
 {% endblock %}

@@ -14,9 +14,11 @@ def make_call_from_whatsapp():
     if phones:
         attempt = Attempts()
         attempt.add(phones["caller"], phones["receiver"])
-        ami = AsteriskAmi(phones["chatId"], phones["caller"], phones["receiver"])
-        call = ami.make_external_call()
         
+        ami = AsteriskAmi("", phones["caller"], phones["receiver"])
+        call = ami.make_external_call()
+        print(call)
+            
         if call:
             caller_stat = CallerStat()
             called_stat = CalledStat()
@@ -36,7 +38,7 @@ def make_call_from_whatsapp():
                     caller_stat.answered(phones["caller"])
                     
                 if not called_stat.exist(phones["receiver"]):
-                    called_stat.add(phones["receiver"])
+                    called_stat.add(phones["receiver"], 0)
                     called_stat.answered(phones["receiver"])
                 else:
                     called_stat.answered(phones["receiver"])
@@ -48,15 +50,16 @@ def make_call_from_whatsapp():
                     caller_stat.unanswered(phones["caller"])
                     
                 if not called_stat.exist(phones["receiver"]):
-                    called_stat.add(phones["receiver"])
+                    called_stat.add(phones["receiver"], 0)
                     called_stat.unanswered(phones["receiver"])
                 else:
                     called_stat.unanswered(phones["receiver"])
-    return "make call"
+    return "external call"
 
 @app.get("/")
 def home():
-    return render_template("index.html")
+    attempt = Attempts()
+    return render_template("index.html", attempts=attempt.get_all())
 
 @app.get("/cdr")
 def cdr():
@@ -123,7 +126,7 @@ def make_an_internal_call():
                 called_stat.unanswered(phones["receiver"])
             else:
                 called_stat.unanswered(phones["receiver"])
-    return True
+    return "internal call"
 
 
 if (__name__) == "__main__":

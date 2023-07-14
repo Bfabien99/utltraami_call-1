@@ -4,9 +4,34 @@
 {% endblock %}
 {% block content %}
 <h1 id="page_title">ULTRAAMI HOME</h1>
-    <section>
-        
-    </section>
+<section>
+    {% if attempts %}
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>date</th>
+                <th>caller</th>
+                <th>called</th>
+                <th>detailed date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in attempts %}
+            <tr>
+                <td>{{attempt.id}}</td>
+                <td>{{attempt.attempt_date}}</td>
+                <td>{{attempt.caller}}</td>
+                <td>{{attempt.called}}</td>
+                <td>{{attempt.detail_date}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h3 class="empty">No attempts</h3>
+    {% endif %}
+</section>
 {% endblock %}
 {% block script %}
 {{super()}}
