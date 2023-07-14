@@ -19,6 +19,7 @@ class AsteriskAmi():
         self.__ami.register_event(["Hangup"], self.__hangup_callback)
         self.__ami.register_event(["*"], self.__bridge_callback)
         
+    # make a call to a real number    
     def make_external_call(self):
         try:
             self.__ami.register_event(["Originate"], self.__originateE_callback)
@@ -36,6 +37,7 @@ class AsteriskAmi():
         finally:
             return self.__data
         
+    # make a call to asterisk pjsip user
     def make_internal_call(self): 
         try:
             self.__ami.register_event(["Originate"], self.__originateI_callback)
@@ -51,7 +53,9 @@ class AsteriskAmi():
             print("Error make_internal_call:", e)
         finally:
             return self.__data
-        
+    
+    # get bridge event
+    # bridge = when a call is accepted  
     async def __bridge_callback(self, events):
         if events.get("Event") == "BridgeEnter":
             self.__data["bridge"]=events
@@ -64,11 +68,13 @@ class AsteriskAmi():
         if events.get("Event") == "Hangup":
             self.__data["hangup"]=events
             await self.__ami.connection_close()
-        
+    
+    # originate for internal call to asterisk    
     def __originateI_callback(self, events):
         print("-- Internal originate call begin... --")
         print(events)
-        
+      
+    # originate for a real number    
     def __originateE_callback(self, events):
         print("-- External originate call begin... --")
         print(events)
