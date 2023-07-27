@@ -1,14 +1,16 @@
 from flask import Flask, request, render_template, url_for
 from Class.ultramsg import Ultramsg
-from Class.aami import AsteriskAmi
+#from Class.aami import AsteriskAmi
+from Class.fesl import originate_and_bridge_calls
 from models.handle_call import Attempts, Cdr, CallerStat, CalledStat, UniqueLink
 
 app = Flask(__name__)
 
 
 # DEFINITION DES ROUTES
+"""
 @app.post("/")
-def make_call_from_whatsapp():
+def aami_make_call_from_whatsapp():
     bot = Ultramsg(request.json)
     phones = bot.Processingـincomingـmessages()
     if phones:
@@ -55,7 +57,16 @@ def make_call_from_whatsapp():
                 else:
                     called_stat.unanswered(phones["receiver"])
     return "external call"
+"""
 
+@app.post("/")
+def make_call_from_whatsapp():
+    bot = Ultramsg(request.json)
+    phones = bot.Processingـincomingـmessages()
+    if phones:
+        originate_and_bridge_calls(phones["caller"], phones["receiver"])
+        return "success"
+    
 @app.get("/")
 def home():
     attempt = Attempts()
@@ -81,8 +92,9 @@ def unique_link():
     unique_link=UniqueLink()
     return render_template("link.html", links=unique_link.get_all())
 
+"""
 @app.post("/internal")
-def make_an_internal_call():
+def aami_make_an_internal_call():
     phones={"caller":"702", "receiver":"701"}
     attempt = Attempts()
     attempt.add(phones["caller"], phones["receiver"])
@@ -127,7 +139,7 @@ def make_an_internal_call():
             else:
                 called_stat.unanswered(phones["receiver"])
     return "internal call"
-
+"""
 
 if (__name__) == "__main__":
     app.run()
